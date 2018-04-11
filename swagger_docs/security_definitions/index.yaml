@@ -1,0 +1,8 @@
+BasicAuth:
+  type: basic
+Bearer:
+  type: oauth2
+  flow: password
+  tokenUrl: http://nasmapi-dev.southcentralus.cloudapp.azure.com/v1.0/oauth/token
+  scopes:
+    read: Grants Read Access

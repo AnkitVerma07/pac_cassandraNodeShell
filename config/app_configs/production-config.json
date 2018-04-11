@@ -1,0 +1,7 @@
+{
+  "s3" : {
+    "bucket": "medhuddle",
+    "env": "production",
+    "hostUrl": "https://s3.amazonaws.com/"
+  }
+}

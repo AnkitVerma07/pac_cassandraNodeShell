@@ -1,0 +1,18 @@
+swagger: "2.0"
+host: medhuddle.com
+basePath: /v1.0
+schemes:
+- "http"
+- "https"
+
+info:
+  $ref: ./swagger_docs/info/index.yaml
+
+definitions:
+  $ref: ./swagger_docs/definitions/index.yaml
+
+securityDefinitions:
+  $ref: ./swagger_docs/security_definitions/index.yaml
+
+paths:
+  $ref: ./swagger_docs/paths/index.yaml

@@ -1,0 +1,9 @@
+version: 0.0.1
+title: NASM API
+description:
+  "RESTful API documentaiton for the NASM project. This API uses the OAuth 2.0 protocol to protect vital endpoints
+  and access to resources. For clients that will be integrating with this API, it should be noted for all endpoints that are protected,
+  the client should be listening for an HTTP status code of 401. This status code will be returned in the event that an AccessToken has
+  either been revoked or expired, in which case the client should take measures to utilize the RefreshToken obtained on login to request
+  a new AccessToken. At any time one should recieve a response with the status code 403 Forbidden, it is safe to assume that the user does
+  not have the means or right to access the resources and should be forced to log back in through their respecitve application."

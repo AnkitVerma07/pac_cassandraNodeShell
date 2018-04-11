@@ -1,0 +1,218 @@
+Token:
+  title: TokenModel
+  type: object
+  properties:
+    access_token:
+      type: string
+    refresh_token:
+      type: string
+    expires_in:
+      type: integer
+    token_type:
+      type: string
+
+TokenPasswordExchangeRequest:
+  title: TokenPasswordExchangeRequest
+  type: object
+  properties:
+    grant_type:
+      type: string
+    username:
+      type: string
+    password:
+      type: string
+    scope:
+      type: string
+
+TokenRefreshExchangeRequest:
+  title: TokenRefreshExchangeRequest
+  type: object
+  properties:
+    grant_type:
+      type: string
+    refresh_token:
+      type: string
+    scope:
+      type: string
+
+UserModel:
+  title: UserModel
+  type: object
+  properties:
+    id:
+      type: string
+    created_at:
+      type: string
+    updated_at:
+      type: string
+    email:
+      type: string
+    pin_code:
+      type: string
+    first_name:
+      type: string
+    last_name:
+      type: string
+    birth_date:
+      type: date
+    gender:
+      type: string
+    phone_number:
+      type: string
+    role:
+      type: string
+    fusionetics_role:
+      type: string
+
+PostClient:
+  title: CreateClient
+  type: object
+  properties:
+    email:
+      type: string
+      example: 'something@another.com'
+    pin_code:
+      type: string
+    first_name:
+      type: string
+    last_name:
+      type: string
+    birth_date:
+      type: string
+    gender:
+      type: string
+      example: 'MALE | FEMALE'
+    phone_number:
+      type: string
+    height:
+      type: number
+    weight:
+      type: number
+
+PostTrainer:
+  title: CreateTrainer
+  type: object
+  properties:
+    email:
+      type: string
+      example: 'something@another.com'
+    pin_code:
+      type: string
+    first_name:
+      type: string
+    last_name:
+      type: string
+    birth_date:
+      type: date
+    gender:
+      type: string
+      example: 'MALE | FEMALE'
+    phone_number:
+      type: string
+    yrs_of_exp:
+      type: number
+
+SubmitOHST:
+  title: SubmitOHST
+  type: object
+  properties:
+    two_ls_experiences_pain:
+      type: boolean
+    two_ls_foot_turns_out_r:
+      type: boolean
+    two_ls_foot_turns_out_l:
+      type: boolean
+    two_ls_foot_flattens_r:
+      type: boolean
+    two_ls_foot_flattens_l:
+      type: boolean
+    two_ls_knee_moves_in_val_r:
+      type: boolean
+    two_ls_knee_moves_in_val_l:
+      type: boolean
+    two_ls_knee_moves_out_var_r:
+      type: boolean
+    two_ls_knee_moves_out_var_l:
+      type: boolean
+    two_ls_excessive_forward_lean:
+      type: boolean
+    two_ls_low_back_arches:
+      type: boolean
+    two_ls_low_back_rounds:
+      type: boolean
+    two_ls_arms_fall_forward:
+      type: boolean
+    two_ls_heel_lifts_r:
+      type: boolean
+    two_ls_heel_lifts_l:
+      type: boolean
+    two_ls_weight_shift_r:
+      type: boolean
+    two_ls_weight_shift_l:
+      type: boolean
+    date:
+      type: date
+
+ClientGoal:
+  title: ClientGoal
+  type: object
+  properties:
+    id:
+      type: string
+    name:
+      type: string
+    created_at:
+      type: string
+    updated_at:
+      type: string
+
+CertificateModel:
+  title: Certificate
+  type: object
+  properties:
+    id:
+      type: string
+    name:
+      type: string
+    created_at:
+      type: string
+    updated_at:
+      type: string
+
+ConsistentResponseObject:
+  title: Response
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    error:
+      type: boolean
+      example: false
+    result:
+      type: object
+
+UnauthorizedError:
+  title: UnauthorizedError
+  type: object
+  properties:
+    code:
+      type: integer
+      example: 4001 || 4002
+    message:
+      type: string
+      example: "Unauthorized: Invalid Access Token. || Unauthorized: AccessToken expired."
+    error:
+      type: string
+
+ForbiddenError:
+  title: ForbiddenError
+  type: object
+  properties:
+    error:
+      type: integer
+      example: "4100 || 4101"
+    error_description:
+      type: string
+      example: "Unauthorized: Invalid authorization client || Unauthorized: Invalid
+      authorization client credentials"

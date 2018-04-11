@@ -1,0 +1,844 @@
+/api/oauth/token:
+  post:
+    tags:
+      - Oauth
+    description:
+      "Exchange user credentials for an access and refresh token to make authorized calls with."
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    security:
+      - BasicAuth: []
+    parameters:
+      - in: body
+        name: credentials info
+        schema:
+          $ref: '#/definitions/TokenPasswordExchangeRequest'
+    responses:
+      200:
+        description: OK
+        schema:
+          $ref: '#/definitions/Token'
+
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/ForbiddenError'
+
+/api/users/me:
+  get:
+    tags:
+      - Users
+    description:
+      "Gets logged in **User** object."
+    security:
+      - Bearer: []
+    responses:
+      200:
+        description: Successful response
+        schema:
+          $ref: '#/definitions/UserModel'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/UnauthorizedError'
+
+/api/users/{userId}/programs:
+  get:
+    tags:
+      - Client
+    description:
+      "Get users programs."
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: userId
+    responses:
+      200:
+        description: OK
+        type: array
+        items:
+          type: object
+
+/api/users/bygoal/{goalId}:
+  get:
+    tags:
+      - Client
+    description:
+      "Get All Users for a goal."
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: goalId
+    responses:
+      200:
+        description: OK
+        type: object
+
+/api/users/mytrainer/{userId}:
+  get:
+    tags:
+      - Client
+    description:
+      "Get Trainer by Client userId."
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: userId
+    responses:
+      200:
+        description: OK
+        type: object
+
+/api/users:
+  post:
+    tags:
+      - Client
+    description:
+      "Trainer creates a new client to join the platform."
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    parameters:
+      - in: body
+        name: client payload
+        schema:
+          $ref: '#/definitions/PostClient'
+    responses:
+      200:
+        description: OK
+        schema:
+          $ref: '#/definitions/UserModel'
+
+/api/users/{userId}/submit-ohst:
+  post:
+    tags:
+      - Client
+    description:
+      "Logged in Client submits his/her OHST."
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    parameters:
+      - in: path
+        name: userId
+      - in: body
+        name: SubmitOHST Payload
+        schema:
+          $ref: '#/definitions/SubmitOHST'
+    responses:
+      200:
+        description: OK
+        schema:
+          $ref: '#/definitions/UserModel'
+
+/api/users/{userId}:
+    get:
+      tags:
+        - Users
+      description:
+        "Get User By ID."
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: userId
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/UserModel'
+
+    put:
+      tags:
+        - Client
+      description:
+        "Update Client endpoint."
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      security:
+        - Bearer: []
+      parameters:
+        - in: path
+          name: userId
+        - in: body
+          name: client payload
+          schema:
+            $ref: '#/definitions/PostClient'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/UserModel'
+
+/api/users/client/goals:
+  put:
+    tags:
+      - Client
+    description:
+      "Client can update (add new) goals."
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    parameters:
+      - in: body
+        schema:
+          properties:
+            userId:
+              type: string
+            goal Ids:
+              type: array
+              items:
+                type: string
+    responses:
+      200:
+        description: OK
+        schema:
+          properties:
+            success:
+              type: boolean
+            error:
+              type: boolean
+            result:
+              type: array
+              items:
+                $ref: '#/definitions/ClientGoal'
+
+/api/users/goals:
+  delete:
+    tags:
+      - Client
+    description:
+      "Remove Client Goals"
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    parameters:
+      - in: body
+        schema:
+          properties:
+            userId:
+              type: string
+            goals:
+              type: array
+              items:
+                type: string
+    responses:
+      200:
+        description: OK
+        type: array
+
+/api/users/trainer/clients:
+  get:
+    tags:
+      - Trainer
+    description:
+      "Logged in Trainer retreats all his/her clients."
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    responses:
+      200:
+        description: OK
+        type: array
+        schema:
+          $ref: '#/definitions/UserModel'
+
+/api/users/trainer:
+  post:
+    tags:
+      - Trainer
+    description:
+      "Trainer creates a new trainer to join the platform."
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    parameters:
+      - in: body
+        name: trainer payload
+        schema:
+          $ref: '#/definitions/PostTrainer'
+    responses:
+      200:
+        description: OK
+        schema:
+          $ref: '#/definitions/UserModel'
+
+/api/users/trainer/{userId}:
+  put:
+    tags:
+      - Trainer
+    description:
+      "Trainer upadte endpoint."
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    parameters:
+      - in: params
+        name: userId
+      - in: body
+        name: trainer payload
+        schema:
+          $ref: '#/definitions/PostTrainer'
+    responses:
+      200:
+        description: OK
+        schema:
+          $ref: '#/definitions/UserModel'
+
+/api/users/trainer/certificates:
+  put:
+    tags:
+      - Trainer
+    description:
+      "Trainer can update (add new) certificates."
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    parameters:
+      - in: body
+        schema:
+          properties:
+            userId:
+              type: string
+            certificates:
+              type: array
+              items:
+                type: string
+    responses:
+      200:
+        description: OK
+        type: array
+
+/api/users/certificates:
+  delete:
+    tags:
+      - Trainer
+    description:
+      "Remove Trainer Certificates"
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    parameters:
+      - in: body
+        schema:
+          properties:
+            userId:
+              type: string
+            certificates:
+              type: array
+              items:
+                type: string
+    responses:
+      200:
+        description: OK
+        type: array
+
+/api/register/trainer:
+  post:
+    tags:
+      - Register
+    description:
+      "Create new Trainer, auth no needed."
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    parameters:
+      - in: body
+        name: trainer payload
+        schema:
+          $ref: '#/definitions/PostTrainer'
+    responses:
+      200:
+        description: OK
+        schema:
+          $ref: '#/definitions/UserModel'
+
+/api/register/{userId}/reset-password:
+  post:
+    tags:
+      - Register
+    description:
+      "Endpoint to reset user's password. Auth not needed!"
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    parameters:
+      - in: body
+        schema:
+          properties:
+            password:
+              type: string
+      - in: path
+        name: userId
+        type: string
+      - in: query
+        name: token (passwordResetId)
+        type: string
+    responses:
+      200:
+        description: OK
+
+/api/certificates:
+  get:
+    tags:
+      - Certificates
+    description:
+      "Get All Certificates."
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    responses:
+      200:
+        description: OK
+        schema:
+          properties:
+            success:
+              type: boolean
+            error:
+              type: boolean
+            result:
+              type: array
+              items:
+                $ref: '#/definitions/CertificateModel'
+
+/api/goals:
+  get:
+    tags:
+      - Goals
+    description:
+      "Get All Goals."
+    produces:
+      - application/json
+    security:
+      - Bearer: []
+    responses:
+      200:
+        description: OK
+        schema:
+          properties:
+            success:
+              type: boolean
+            error:
+              type: boolean
+            result:
+              type: array
+              items:
+                $ref: '#/definitions/CertificateModel'
+
+/api/password-reset:
+  get:
+    tags:
+      - PasswordReset
+    description:
+      "Get Password reset requests."
+    produces:
+      - application/json
+    responses:
+      200:
+        description: OK
+        type: array
+
+  post:
+    tags:
+      - PasswordReset
+    description:
+      "Create new Password Reset Request."
+    consumes:
+      - application/json
+    produces:
+      - application/json
+    parameters:
+      - in: body
+        name: email
+        type: string
+    responses:
+      200:
+        description: OK
+        type: object
+#
+#/api/training/user/{userId}:
+#  post:
+#    tags:
+#      - Training
+#    description:
+#      "User submits a training load."
+#    consumes:
+#      - application/json
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: path
+#        name: userId
+#      - in: body
+#        name: training payload
+#    responses:
+#      200:
+#        description: OK
+#        type: object
+#
+#/api/training/user/{userId}:
+#  get:
+#    tags:
+#      - Training
+#    description:
+#      "Get user training load."
+#    consumes:
+#      - application/json
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: path
+#        name: userId
+#      - in: query
+#        name: startDate
+#      - in: query
+#        name: endDate
+#    responses:
+#      200:
+#        description: OK
+#        type: array
+#
+#/api/tests/mescreen/{userId}:
+#  post:
+#    tags:
+#      - Test
+#    description:
+#      "User submits mescreen test."
+#    consumes:
+#      - application/json
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: path
+#        name: userId
+#      - in: body
+#        name: me screen test payload
+#    responses:
+#      200:
+#        description: OK
+#        type: object
+#
+#/api/tests/drt/{userId}:
+#  post:
+#    tags:
+#      - Test
+#    description:
+#      "User submits drt test."
+#    consumes:
+#      - application/json
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: path
+#        name: userId
+#      - in: body
+#        name: drt test payload
+#    responses:
+#      200:
+#        description: OK
+#        type: object
+#
+#
+#/api/programs/groupDetail/{userProgramId}:
+#  get:
+#    tags:
+#      - Program
+#    description:
+#      "Get program's group details by user program id."
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: path
+#        name: userProgramId
+#      - in: query
+#        name: userId
+#    responses:
+#      200:
+#        description: OK
+#        type: object
+#
+#/api/programs/assign:
+#  post:
+#    tags:
+#      - Program
+#    description:
+#      "Assign a program to an client."
+#    consumes:
+#      - application/json
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: body
+#        name: userId
+#      - in: body
+#        name: programId
+#    responses:
+#      200:
+#        description: OK
+#        type: object
+#
+#/api/programs/schedule:
+#  post:
+#    tags:
+#      - Program
+#    description:
+#      "Schedule a program to an client."
+#    consumes:
+#      - application/json
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: body
+#        name: userId
+#      - in: body
+#        name: programId
+#      - in: body
+#        name: scheduleId
+#      - in: body
+#        name: userProgramId
+#      - in: body
+#        name: calender
+#    responses:
+#      200:
+#        description: OK
+#        type: object
+#
+#/api/programs:
+#  put:
+#    tags:
+#      - Program
+#    description:
+#      "Update a program."
+#    consumes:
+#      - application/json
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: body
+#        name: program
+#        type: object
+#    responses:
+#      200:
+#        description: OK
+#        type: object
+#
+#/api/teams/all:
+#  get:
+#    tags:
+#      - Team
+#    description:
+#      "Get all teams."
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    responses:
+#      200:
+#        description: OK
+#        type: array
+#
+#/api/teams/{teamId}/clients:
+#  get:
+#    tags:
+#      - Team
+#    description:
+#      "Get all clients in a team."
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: path
+#        name: teamId
+#    responses:
+#      200:
+#        description: OK
+#        type: array
+#
+#/api/program-catalog/search:
+#  get:
+#    tags:
+#      - ProgramCatalog
+#    description:
+#      "Search for a program catalog."
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: query
+#        name: term
+#    responses:
+#      200:
+#        description: OK
+#        type: array
+#
+#/api/program-catalog/categories:
+#  get:
+#    tags:
+#      - ProgramCatalog
+#    description:
+#      "Get program catalog categories."
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    responses:
+#      200:
+#        description: OK
+#        type: array
+#
+#/api/program-catalog/genres:
+#  get:
+#    tags:
+#      - ProgramCatalog
+#    description:
+#      "Get program catalog genres."
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    responses:
+#      200:
+#        description: OK
+#        type: array
+#
+#
+#/api/users/{userId}/schedule:
+#  get:
+#    tags:
+#      - Client
+#    description:
+#      "Get users schedule by specified dates."
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: path
+#        name: userId
+#      - in: query
+#        name: startDate
+#      - in: query
+#        name: endDate
+#    responses:
+#      200:
+#        description: OK
+#        type: array
+#
+#/api/users/{userId}/meresults:
+#  get:
+#    tags:
+#      - Client
+#    description:
+#      "Get users results by specified dates."
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: path
+#        name: userId
+#      - in: query
+#        name: startDate
+#      - in: query
+#        name: endDate
+#    responses:
+#      200:
+#        description: OK
+#        type: array
+#
+#/api/users/{userId}/weights:
+#  get:
+#    tags:
+#      - Client
+#    description:
+#      "Get users weights by specified dates."
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: path
+#        name: userId
+#      - in: query
+#        name: startDate
+#      - in: query
+#        name: endDate
+#    responses:
+#      200:
+#        description: OK
+#        type: array
+#
+#/api/users/{scheduleId}/complete:
+#  put:
+#    tags:
+#      - Client
+#    description:
+#      "Mark logged in user's schedule complete."
+#    produces:
+#      - application/json
+#    security:
+#      - Bearer: []
+#    parameters:
+#      - in: path
+#        name: scheduleId
+#    responses:
+#      200:
+#        description: OK
+#        type: object
