@@ -1,5 +1,5 @@
 version: 0.0.1
-title: NASM API
+title: PAC DEMO API
 description:
   "RESTful API documentaiton for the NASM project. This API uses the OAuth 2.0 protocol to protect vital endpoints
   and access to resources. For clients that will be integrating with this API, it should be noted for all endpoints that are protected,

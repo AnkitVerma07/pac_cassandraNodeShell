@@ -64,17 +64,17 @@ app.use(passport.session());
 app.use(helmet());
 
 const swaggerDocument = YAML.safeLoad(fs.readFileSync('./swagger.yaml'));
-const options = {
-    filter: ['relative', 'remote'],
-    loaderOptions: {
-        processContent: (content, cb) => {
-            cb(null, YAML.safeLoad(content.text));
-        },
-    },
-};
 
-const results = resolve(swaggerDocument, options);
+const results = resolve(swaggerDocument, {
+  filter: ['relative', 'remote'],
+  loaderOptions: {
+    processContent: (content, cb) => {
+      cb(null, YAML.safeLoad(content.text));
+    },
+  },
+});
 app.use('/documentation', swaggerUi.serve, swaggerUi.setup(results.resolved));
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));

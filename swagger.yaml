@@ -1,6 +1,6 @@
 swagger: "2.0"
-host: medhuddle.com
-basePath: /v1.0
+host: pac_demo
+basePath: /
 schemes:
 - "http"
 - "https"
