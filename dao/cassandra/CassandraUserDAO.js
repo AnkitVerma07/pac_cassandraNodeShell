@@ -1,5 +1,6 @@
 'use strict';
 
+const client = require("../../util/cassandra");
 const models = require("../../models/index");
 const GenericError = require('../../util/errors').GenericError;
 
@@ -8,7 +9,14 @@ const CassandraUserDAO = function (constants) {
   const self = this;
 
   self.getUserById = async (userId) => {
-
+    const query = 'SELECT name, email FROM users WHERE key = ?';
+    const result = await client.execute(query, [ userId ])
+    if(result.rows.length > 0){
+      const user = result.rows[0];
+      return user
+    }else{
+      return 'error';
+    }
   };
 
   self.fetchUserById = (userId) => {
